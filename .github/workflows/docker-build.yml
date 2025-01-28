@@ -1,0 +1,67 @@
+name: Docker Build and Deploy
+
+on:
+  push:
+    branches:
+      - main   # ou o nome da sua branch principal
+  pull_request:
+    branches:
+      - main
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    services:
+      postgres:
+        image: postgres:14
+        env:
+          POSTGRES_USER: postgres
+          POSTGRES_PASSWORD: postgres
+          POSTGRES_DB: mydb
+        ports:
+          - 5432:5432
+        options: --health-cmd="pg_isready -U postgres" --health-interval=5s --health-timeout=3s --health-retries=3
+
+    steps:
+    - name: Check out the repository
+      uses: actions/checkout@v2
+
+    # Backend - Build Spring Boot Application
+    - name: Set up JDK 17
+      uses: actions/setup-java@v2
+      with:
+        java-version: '17'
+
+    - name: Build backend with Maven
+      run: |
+        cd backend
+        ./mvnw clean install -DskipTests
+
+    # Frontend - Build React Application
+    - name: Set up Node.js
+      uses: actions/setup-node@v2
+      with:
+        node-version: '16'
+
+    - name: Install dependencies and build frontend
+      run: |
+        cd frontend
+        npm install
+        npm run build
+
+    # Build Docker images
+    - name: Build Docker images
+      run: |
+        docker-compose -f docker-compose.yml build
+
+    # Run Tests (optional, dependendo da configuração do seu projeto)
+    - name: Run backend tests
+      run: |
+        cd backend
+        ./mvnw test
+
+    # Deploy (opcional, configurar de acordo com sua infraestrutura)
+    # - name: Deploy to Production Server
+    #   run: |
+    #     docker-compose -f docker-compose.yml up -d
