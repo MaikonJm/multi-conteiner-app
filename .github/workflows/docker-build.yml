@@ -34,6 +34,10 @@ jobs:
         java-version: '17'
         distribution: 'temurin'
 
+    # Grant execute permission to mvnw
+    - name: Grant execute permission to mvnw
+      run: chmod +x multi-container-app/backend/mvnw
+
     # Build Spring Boot Backend with Maven
     - name: Build backend with Maven
       run: |
