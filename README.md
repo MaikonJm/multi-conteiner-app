@@ -8,6 +8,7 @@ Este projeto é ideal para quem deseja entender como orquestrar múltiplos cont�
 
 A estrutura do projeto é organizada da seguinte forma:
 
+```bash
 multi-container-app/
 │
 ├── backend/                # Código do backend em Spring Boot
@@ -26,7 +27,7 @@ multi-container-app/
 │
 ├── docker-compose.yml      # Arquivo de configuração do Docker Compose
 └── README.md               # Documentação do projeto
-
+```
 
 
 ### Componentes do Projeto
@@ -51,8 +52,10 @@ Se você ainda não possui o projeto localmente, clone o repositório:
 ```bash
 git clone https://github.com/MaikonJm/multi-container-app.git
 cd multi-container-app
-
+```
 
 Execute o comando abaixo para construir as imagens e iniciar os contêineres:
 
+```bash
 docker-compose up --build
+```
