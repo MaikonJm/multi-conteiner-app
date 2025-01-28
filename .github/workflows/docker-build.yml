@@ -3,7 +3,7 @@ name: Docker Build and Deploy
 on:
   push:
     branches:
-      - main   # ou o nome da sua branch principal
+      - main
   pull_request:
     branches:
       - main
@@ -32,12 +32,12 @@ jobs:
       uses: actions/setup-java@v2
       with:
         java-version: '17'
-        distribution: 'temurin'  # Distribuição oficial OpenJDK
+        distribution: 'temurin'
 
     # Build Spring Boot Backend with Maven
     - name: Build backend with Maven
       run: |
-        cd backend
+        cd multi-container-app/backend
         ./mvnw clean install -DskipTests
 
     # Frontend - Set up Node.js for React
@@ -48,22 +48,18 @@ jobs:
 
     - name: Install dependencies and build frontend
       run: |
-        cd frontend
+        cd multi-container-app/frontend
         npm install
         npm run build
 
     # Build Docker images using Docker Compose
     - name: Build Docker images
       run: |
+        cd multi-container-app
         docker-compose -f docker-compose.yml build
 
-    # Run backend tests (optional, dependendo da configuração do seu projeto)
+    # Run backend tests (optional)
     - name: Run backend tests
       run: |
-        cd backend
+        cd multi-container-app/backend
         ./mvnw test
-
-    # Deploy (opcional, configurar de acordo com sua infraestrutura)
-    # - name: Deploy to Production Server
-    #   run: |
-    #     docker-compose -f docker-compose.yml up -d
