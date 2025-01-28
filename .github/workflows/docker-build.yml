@@ -27,19 +27,20 @@ jobs:
     - name: Check out the repository
       uses: actions/checkout@v2
 
-    # Backend - Build Spring Boot Application
+    # Backend - Set up JDK 17 (AdoptOpenJDK)
     - name: Set up JDK 17 (AdoptOpenJDK)
       uses: actions/setup-java@v2
       with:
         java-version: '17'
-        distribution: 'temurin'  # Adicionando a distribuição do JDK
+        distribution: 'temurin'  # Distribuição oficial OpenJDK
 
+    # Build Spring Boot Backend with Maven
     - name: Build backend with Maven
       run: |
         cd backend
         ./mvnw clean install -DskipTests
 
-    # Frontend - Build React Application
+    # Frontend - Set up Node.js for React
     - name: Set up Node.js
       uses: actions/setup-node@v2
       with:
@@ -51,12 +52,12 @@ jobs:
         npm install
         npm run build
 
-    # Build Docker images
+    # Build Docker images using Docker Compose
     - name: Build Docker images
       run: |
         docker-compose -f docker-compose.yml build
 
-    # Run Tests (optional, dependendo da configuração do seu projeto)
+    # Run backend tests (optional, dependendo da configuração do seu projeto)
     - name: Run backend tests
       run: |
         cd backend
