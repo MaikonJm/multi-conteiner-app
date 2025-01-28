@@ -1,0 +1,51 @@
+version: '3.9'
+
+services:
+  backend:
+    build:
+      context: ./backend
+      dockerfile: Dockerfile
+    depends_on:
+      db:
+        condition: service_started
+        required: true
+    environment:
+      SPRING_DATASOURCE_PASSWORD: postgres
+      SPRING_DATASOURCE_URL: jdbc:postgresql://db:5432/mydb
+      SPRING_DATASOURCE_USERNAME: postgres
+    networks:
+      app-network: null
+    ports:
+      - "8081:8080"
+
+  frontend:
+    build:
+      context: ./frontend
+      dockerfile: Dockerfile
+    depends_on:
+      backend:
+        condition: service_started
+        required: true
+    networks:
+      app-network: null
+    ports:
+      - "3001:80"
+
+  db:
+    image: postgres:14
+    environment:
+      POSTGRES_DB: mydb
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: postgres
+    networks:
+      app-network: null
+    volumes:
+      - db-data:/var/lib/postgresql/data
+      - ./multi-container-app/db/init.sql:/docker-entrypoint-initdb.d/init.sql
+
+networks:
+  app-network:
+    driver: bridge
+
+volumes:
+  db-data:
