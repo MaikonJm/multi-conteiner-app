@@ -32,7 +32,7 @@ jobs:
       uses: actions/setup-java@v2
       with:
         java-version: '17'
-        distribution: 'adoptopenjdk'  # Adicionando a distribuição do JDK
+        distribution: 'temurin'  # Adicionando a distribuição do JDK
 
     - name: Build backend with Maven
       run: |
