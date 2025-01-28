@@ -59,8 +59,24 @@ jobs:
     # Install Docker and Docker Compose
     - name: Set up Docker
       run: |
+        # Remover pacotes antigos do Docker e containerd
+        sudo apt-get remove -y docker docker-engine docker.io containerd runc
+
+        # Atualizar pacotes e instalar dependências
         sudo apt-get update
-        sudo apt-get install -y docker.io
+        sudo apt-get install -y apt-transport-https ca-certificates curl software-properties-common
+
+        # Adicionar chave GPG do Docker
+        curl -fsSL https://download.docker.com/linux/ubuntu/gpg | sudo tee /etc/apt/trusted.gpg.d/docker.asc
+
+        # Adicionar repositório do Docker
+        sudo add-apt-repository "deb [arch=amd64] https://download.docker.com/linux/ubuntu $(lsb_release -cs) stable"
+
+        # Atualizar novamente e instalar o Docker
+        sudo apt-get update
+        sudo apt-get install -y docker-ce docker-ce-cli containerd.io
+
+        # Baixar e configurar Docker Compose
         sudo curl -L "https://github.com/docker/compose/releases/download/1.29.2/docker-compose-$(uname -s)-$(uname -m)" -o /usr/local/bin/docker-compose
         sudo chmod +x /usr/local/bin/docker-compose
 
