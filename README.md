@@ -6,7 +6,7 @@ Este é um projeto de exemplo demonstrando como configurar um aplicativo multi-c
 
 O projeto é composto por três contêineres:
 - **Backend**: Servidor da aplicação (Spring Boot).
-- **Frontend**: Interface do usuário (React, por exemplo).
+- **Frontend**: Interface do usuário (React).
 - **Banco de Dados**: Postgres para persistência de dados.
 
 ## Como Rodar o Projeto
