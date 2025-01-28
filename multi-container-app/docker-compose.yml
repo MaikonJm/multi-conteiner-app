@@ -12,7 +12,7 @@ services:
       SPRING_DATASOURCE_URL: jdbc:postgresql://db:5432/mydb
       SPRING_DATASOURCE_USERNAME: postgres
     networks:
-      app-network: null
+      - app-network
     ports:
       - "8081:8080"
     healthcheck:
@@ -27,7 +27,7 @@ services:
     depends_on:
       - backend
     networks:
-      app-network: null
+      - app-network
     ports:
       - "3001:80"
 
@@ -38,7 +38,7 @@ services:
       POSTGRES_USER: postgres
       POSTGRES_PASSWORD: postgres
     networks:
-      app-network: null
+      - app-network
     volumes:
       - db-data:/var/lib/postgresql/data
       - ./multi-container-app/db/init.sql:/docker-entrypoint-initdb.d/init.sql
